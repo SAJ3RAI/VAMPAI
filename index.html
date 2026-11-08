@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Academy</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#000;--card:#17171a;--line:#2b2b30;--mut:#9a9aa2;--red:#e11d2e;color-scheme:dark}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:#fff;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:max(20px,env(safe-area-inset-top)) 16px 120px}
+#app{max-width:560px;margin:0 auto}
+h1{font-size:36px;line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:20px 0 12px}
+h3{font-size:19px;margin:26px 0 12px}
+.sub{color:var(--mut);margin-bottom:22px}
+.card{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;color:inherit;font:inherit}
+button.card:active{border-color:var(--red)}
+.n{color:var(--red);font-size:38px;font-weight:800;line-height:1;min-width:28px}
+.card div{flex:1}.card b{display:block;font-size:17px}.card small,.mut{color:var(--mut)}
+.soon{opacity:.5}.soon .n{color:var(--mut)}.ok .n{color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid .card{margin:0;flex-direction:column;align-items:flex-start;gap:4px}
+.bar{height:4px;background:var(--line);border-radius:4px;margin:10px 0 0}
+.bar i{display:block;height:100%;background:var(--red);border-radius:4px}
+.tag{color:var(--red);font-weight:700;font-size:14px}
+h2{font-size:27px;line-height:1.15;margin:6px 0 16px;letter-spacing:-.01em}
+.body p,.body ul,.body ol,.body blockquote{margin-bottom:14px}
+.body ul,.body ol{padding-left:22px}.body li{margin-bottom:6px}
+.body h4{font-size:16px;color:var(--red);margin:20px 0 6px}
+blockquote{background:var(--card);border-left:3px solid var(--red);border-radius:10px;padding:12px 14px;color:#ececee}
+code{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:14px}
+.nav,.tabs{position:fixed;inset:auto 0 0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#000 35%)}
+.tabs{gap:0;padding:12px 8px calc(10px + env(safe-area-inset-bottom));background:#0c0c0e;border-top:1px solid var(--line)}
+.tabs button{flex:1;background:none;border:0;color:var(--mut);font:600 13px -apple-system,sans-serif;padding:8px 0;border-top:2px solid transparent}
+.tabs .on{color:#fff;border-top-color:var(--red)}
+.nav span{color:var(--mut)}
+.nav button,.btn{background:var(--red);color:#fff;border:0;border-radius:14px;padding:14px 24px;font:700 16px -apple-system,sans-serif}
+.nav .ghost,.btn.ghost{background:var(--card);border:1px solid var(--line)}
+.btn{padding:9px 16px;font-size:14px;margin-top:6px}
+.pr{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.pr p{color:#d8d8dc;font-size:15px;margin:6px 0 4px}
+input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;color:#fff;font:16px sans-serif;margin-bottom:14px}
+.dt{margin-bottom:14px}.dt b{color:var(--red)}
+.cb{display:flex;gap:14px;align-items:center;width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;color:#fff;font:inherit;text-align:left}
+.cb i{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--mut);display:grid;place-items:center;font-style:normal;font-size:15px}
+.cb.on i{background:var(--red);border-color:var(--red)}
+.hero{position:relative;border-radius:24px;padding:22px 20px 0;margin-bottom:14px;background:radial-gradient(120% 90% at 85% 0%,rgba(225,29,46,.38),transparent 60%),var(--card);border:1px solid var(--line);overflow:hidden}
+.hero h1{margin-top:0;font-size:32px}.hero svg{display:block;width:100%;height:auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}.stats b{display:block;font-size:26px;color:var(--red)}.stats small{color:var(--mut);font-size:12px}
+.ic{flex:none;width:44px;height:44px;border-radius:14px;background:rgba(225,29,46,.14);display:grid;place-items:center}.ic svg,.tabs svg{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ic svg{width:24px;height:24px;color:var(--red)}
+.road{margin:0 0 12px 8px;padding-left:26px;border-left:2px solid var(--line)}
+.road div{position:relative;margin-bottom:16px}.road div:before{content:"";position:absolute;left:-35px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--red)}
+.road div.d:before{background:var(--red)}.road b{display:block}.road small{color:var(--mut)}
+.banner{border-radius:20px;padding:20px;margin-bottom:18px;background:linear-gradient(135deg,#2a0b10,#17171a 70%);border:1px solid var(--line);display:flex;align-items:center;gap:18px}
+.banner .big{font-size:68px;font-weight:800;line-height:.9;color:var(--red)}
+.key{background:rgba(225,29,46,.1);border:1px solid rgba(225,29,46,.4);border-radius:14px;padding:12px 14px;margin-bottom:14px}.key b{color:var(--red)}
+#app>*:not(.tabs):not(.nav){animation:up .35s ease both}@keyframes up{from{opacity:0;transform:translateY(8px)}}
+.card,.btn{transition:transform .12s,border-color .12s}.card:active,.btn:active{transform:scale(.98)}
+.tabs svg{display:block;margin:0 auto 3px;width:22px;height:22px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const L=[
+{t:"Что такое ИИ",p:[
+["Что такое ИИ и зачем он нужен",`<p>ИИ — это программа, обученная на огромном количестве текстов, картинок и кода. Она не «думает» как человек, а подбирает самый подходящий ответ на твой запрос.</p><h4>Для чего он нужен</h4><ul><li>тексты и редактура</li><li>объяснение сложного простыми словами</li><li>код, сайты и боты</li><li>идеи, переводы, картинки</li></ul><blockquote>ИИ — помощник, а не волшебная кнопка. Результат зависит от твоего запроса и проверки.</blockquote>`],
+["Какие ИИ для чего подходят",`<ul><li><b>Claude</b> — код, длинные тексты, сайты и боты</li><li><b>ChatGPT</b> — универсальный помощник: идеи, картинки, голос</li><li><b>Gemini</b> — сервисы Google и длинные документы</li><li><b>Perplexity</b> — поиск с источниками</li><li><b>Midjourney</b> — картинки и референсы для дизайна</li></ul><blockquote>Выбирай ИИ под задачу, а не по моде.</blockquote>`],
+["Чего ИИ не умеет",`<p>Понимать границы ИИ так же важно, как знать его сильные стороны. Это экономит часы переделок.</p><h4>Он может ошибаться</h4><p>ИИ звучит уверенно, даже когда неправ. Цены, даты, законы и цифры всегда проверяй по первоисточнику.</p><h4>Он не знает твоего бизнеса</h4><p>Без деталей он напишет «усреднённый» текст. Чем больше фактов о твоём деле ты дашь, тем лучше результат.</p><h4>Он не видит результат за тебя</h4><p>Сайт может выглядеть сломанным на телефоне, а ИИ об этом не узнает. Проверять глазами нужно тебе.</p><div class="key"><b>Ключевая мысль.</b> ИИ ускоряет работу в разы, но ответственность за результат остаётся у тебя.</div>`],
+["Базовые знания",`<ul><li><b>Модель</b> — «мозг» ИИ</li><li><b>Промпт</b> — твой запрос</li><li><b>Контекст</b> — всё, что ИИ помнит в одном чате</li><li><b>Галлюцинация</b> — когда ИИ уверенно выдумывает факты</li></ul><h4>Три правила</h4><ol><li>Важное проверяй.</li><li>Не отправляй ИИ пароли и личные данные.</li><li>Не вышло — уточни запрос, а не бросай.</li></ol>`]
+]},
+{t:"Как писать промты",p:[
+["Формула промта",`<p>ИИ не читает мысли: расплывчатый запрос даёт расплывчатый ответ.</p><ol><li><b>Роль</b> — кем должен быть ИИ</li><li><b>Задача</b> — что сделать</li><li><b>Контекст</b> — для кого и зачем</li><li><b>Формат</b> — как оформить ответ</li><li><b>Ограничения</b> — стиль, объём, чего не делать</li></ol><blockquote>Одна задача — один запрос. Исправляй по одному пункту, а не всё сразу.</blockquote>`],
+["Пример: плохо и хорошо",`<h4>Плохо</h4><blockquote>Сделай сайт для барбершопа</blockquote><h4>Хорошо</h4><blockquote>Ты — веб-дизайнер. Сделай одностраничный сайт для барбершопа «Борода» в одном HTML-файле. Аудитория — мужчины 20–40, главное действие — запись по телефону. Блоки: первый экран, услуги и цены, 3 причины выбрать нас, отзывы (заглушки), контакты. Стиль: чёрный фон, красные акценты, адаптив под телефон. Ответ: только готовый код.</blockquote>`],
+["Типичные ошибки",`<h4>1. Слишком коротко</h4><p>«Сделай сайт» оставляет ИИ десятки решений. Он примет их за тебя, и вряд ли так, как нужно тебе.</p><h4>2. Всё в одном сообщении</h4><p>Если просить логотип, сайт, тексты и рекламу сразу, качество упадёт везде. Разбивай работу на шаги.</p><h4>3. Нет примера</h4><p>Слова «в стиле премиум» каждый понимает по-своему. Лучше приложи ссылку или скриншот.</p><h4>4. Повтор того же запроса</h4><p>Если ответ не подошёл, повтор ничего не изменит. Объясни, что именно не так.</p><div class="key"><b>Проверка.</b> Перед отправкой спроси себя: понял бы незнакомый человек, что от него хотят?</div>`]
+]},
+{t:"Claude и сайт за вечер",p:[
+["Что такое Claude",`<p>Claude — ИИ-ассистент от Anthropic. Ты пишешь обычным языком, а он отвечает текстом, кодом или готовыми файлами.</p><h4>Что умеет</h4><ul><li>писать и объяснять код</li><li>собирать сайты и телеграм-ботов</li><li>работать с документами и файлами</li><li>разбирать скриншоты и находить ошибки</li></ul><blockquote>Программировать не нужно: опиши задачу словами и по шагам доведи до результата.</blockquote>`],
+["Как работать с Claude в чате",`<h4>Один проект — один чат</h4><p>Claude помнит всё, что было выше в чате. Так он не забудет цвета и тексты, о которых вы договорились.</p><h4>Прикладывай файлы и скриншоты</h4><p>Если на телефоне что-то выглядит не так, сделай скриншот и отправь. Это быстрее, чем объяснять словами.</p><h4>Проси объяснять</h4><p>Не понял, что делает код? Напиши: «Объясни простыми словами, что делает этот файл». Так ты учишься, а не просто копируешь.</p><h4>Запутались — начни новый чат</h4><p>Если ответы стали странными, открой новый чат и вставь короткое описание проекта.</p><div class="key"><b>Совет.</b> Сохраняй итоговый файл после каждого удачного шага. Тогда всегда можно вернуться назад.</div>`],
+["Сайт за вечер: шаги 1–3",`<p>Цель — к концу вечера получить живую ссылку на сайт, которую не стыдно отправить человеку. Не идеальный сайт, а живой.</p><h4>Шаг 1. Выбери бизнес-образец</h4><p>Возьми реальную нишу: барбершоп, кофейня, студия маникюра. Название можно придумать. Такой сайт потом пригодится как пример для клиентов этой ниши.</p><h4>Шаг 2. Собери содержание</h4><ul><li>первый экран: название, одна фраза, кнопка</li><li>услуги и цены</li><li>почему сюда (3 коротких пункта)</li><li>отзывы (пока заглушки)</li><li>контакты и как добраться</li></ul><h4>Шаг 3. Попроси Claude</h4><p>Используй формулу из урока про промты. Попроси один HTML-файл — так проще выложить.</p>`],
+["Сайт за вечер: шаги 4–6",`<h4>Шаг 4. Проверь как посетитель</h4><p>Открой файл в браузере и пройди путь: зашёл, понял, что это, нашёл цену, записался.</p><h4>Шаг 5. Доведи</h4><p>Всё, что режет глаз, описывай Claude по одному пункту. Не исправляй всё одним сообщением.</p><h4>Шаг 6. Выложи</h4><ol><li>Зарегистрируйся на vercel.com через GitHub.</li><li>Создай репозиторий и загрузи туда <code>index.html</code>.</li><li>В Vercel нажми «Add New → Project» и выбери репозиторий.</li><li>Через минуту получишь ссылку <code>твой-проект.vercel.app</code>.</li></ol><blockquote>Не сиди над первым сайтом неделю. Сделай за вечер, выложи, покажи двум знакомым — их реакция полезнее десяти правок.</blockquote>`]
+]},
+{t:"Дизайн без нейрослопа",p:[
+["Почему сайты от ИИ похожи",`<p>ИИ выбирает самое частое решение из тех, что видел. Поэтому его сайты выглядят «усреднённо»: тот же градиент, те же карточки, те же слова.</p><h4>Как выглядит нейрослоп</h4><ul><li>фиолетово-синие градиенты без причины</li><li>одинаковые карточки с тенью в три ряда</li><li>шрифт по умолчанию</li><li>текст вроде «Мы создаём будущее вашего бизнеса»</li><li>ни одной настоящей детали: цены, адреса, лиц</li></ul><div class="key"><b>Ключевая мысль.</b> Дизайн начинается с решений, а не с кода. Решения принимаешь ты, а ИИ их исполняет.</div>`],
+["Референсы: что это и где брать",`<p>Референс — пример, на который ты ориентируешься. Это самый быстрый способ объяснить ИИ, чего ты хочешь.</p><h4>Где искать</h4><ul><li>сайты конкурентов в твоей нише</li><li>Pinterest, Behance, Dribbble</li><li>Awwwards: подборки лучших сайтов</li></ul><h4>Как использовать</h4><ol><li>Выбери 2–3 примера, которые нравятся.</li><li>Выпиши, что именно: сетка, шрифт, цвета, фото, отступы.</li><li>Приложи скриншоты к запросу и опиши словами, что взять.</li></ol><blockquote>Не копируй сайт целиком. Бери принципы: ритм, контраст, воздух между блоками.</blockquote>`],
+["Шрифты и цвета",`<h4>Шрифты</h4><p>Хватит двух: один для заголовков, один для текста. Бесплатные и удобные есть в Google Fonts, например Inter, Manrope, Montserrat, Playfair Display для «дорогого» вида.</p><h4>Цвета</h4><p>Работает правило 60/30/10: 60% основной фон, 30% второй цвет для карточек, 10% яркий акцент для кнопок. В этом приложении так: чёрный, серый и красный.</p><h4>Проверка</h4><ul><li>текст читается на телефоне при ярком солнце</li><li>акцент используется только для главного действия</li><li>больше четырёх цветов не нужно</li></ul><blockquote>Пример запроса: «Шрифты Manrope для текста и Playfair Display для заголовков. Цвета: фон #0B0B0C, карточки #17171A, акцент #E11D2E».</blockquote>`]
+]},
+{t:"Свой телеграм-бот с нуля",p:[
+["Что может бот",`<p>Бот — программа, которая отвечает людям в Telegram. Она работает на твоём компьютере или сервере и общается с Telegram через интернет.</p><h4>Для чего нужны боты бизнесу</h4><ul><li>приём заявок и запись клиентов</li><li>ответы на частые вопросы</li><li>каталог и прайс в чате</li><li>рассылки и напоминания</li><li>обучающие курсы, как этот</li></ul><div class="key"><b>Почему это работает.</b> Клиент уже сидит в Telegram. Ему не нужно ничего скачивать или регистрироваться.</div>`],
+["Создание и первый запуск",`<ol><li>В @BotFather отправь <code>/newbot</code>, задай имя и username с окончанием <code>bot</code>.</li><li>Сохрани токен. Это пароль от бота.</li><li>Попроси Claude написать бота на Python и aiogram одним файлом.</li><li>Установи Python 3.12, затем <code>pip install aiogram</code>.</li><li>Положи токен в файл <code>.env</code> и запусти <code>python bot.py</code>.</li></ol><h4>Частые ошибки</h4><ul><li><b>Не найден aiogram:</b> ты ставил его в одно окружение, а запускаешь из другого.</li><li><b>Failed building wheel:</b> версия Python слишком новая или старая. Нужна 3.10–3.13.</li><li><b>Токен неверный:</b> скопируй его у @BotFather целиком.</li></ul>`],
+["Хранение, хостинг и развитие",`<h4>Где хранить данные</h4><p>Для начала хватит SQLite: это один файл на диске, ставить ничего не нужно. В нём можно хранить пользователей, заявки и прогресс.</p><h4>Где держать бота</h4><p>Пока твой компьютер включён и бот запущен, он отвечает. Чтобы работал круглосуточно, нужен сервер (VPS) или хостинг для Python-приложений.</p><h4>Как развивать</h4><ul><li>добавляй по одной функции за раз</li><li>после каждой проверяй <code>/start</code>, кнопки и неверный ввод</li><li>храни токен только в <code>.env</code></li></ul><div class="key"><b>Совет.</b> Сначала сделай бота, который решает одну задачу хорошо. Вторую задачу добавляй, когда первая работает.</div>`]
+]},
+{t:"Мини-апп и первые клиенты",p:[
+["Что такое мини-апп",`<p>Мини-апп — сайт, который открывается прямо внутри Telegram. Для человека это выглядит как приложение, но ничего скачивать не нужно.</p><h4>Что можно сделать</h4><ul><li>каталог с красивыми карточками</li><li>запись на услугу с выбором времени</li><li>обучение и курсы, как это приложение</li><li>личный кабинет и бонусы</li></ul><div class="key"><b>Разница с ботом.</b> Бот хорош для коротких диалогов. Мини-апп нужен, когда человеку надо что-то смотреть и выбирать.</div>`],
+["Как подключить к боту",`<ol><li>Собери сайт одним HTML-файлом и подключи <code>telegram-web-app.js</code>.</li><li>Выложи его на GitHub Pages или Vercel. Нужна ссылка с HTTPS.</li><li>В @BotFather отправь <code>/newapp</code> и вставь ссылку.</li><li>Добавь кнопку «Открыть мини-апп» в бота с адресом сайта.</li><li>Проверь на телефоне: тема, кнопка «Назад», прокрутка.</li></ol><blockquote>Обновлять просто: загрузи новый файл в тот же репозиторий, ссылка останется прежней.</blockquote>`],
+["Первые клиенты",`<h4>Шаг 1. Сделай образец</h4><p>Выбери одну нишу, например барбершопы, и собери для неё демо-сайт или бота с придуманным названием.</p><h4>Шаг 2. Покажи людям</h4><p>Найди 10 владельцев таких бизнесов. Отправь ссылку и два скриншота с короткой фразой: «Сделал пример для вашей сферы, посмотрите».</p><h4>Шаг 3. Договорись о понятном</h4><ul><li>что входит: страницы, тексты, подключение</li><li>сроки и сколько раундов правок</li><li>цена: на старте можно взять меньше за пилотный проект и попросить отзыв</li></ul><h4>Чего не обещать</h4><p>Не обещай «поток заявок». Обещай то, что делаешь сам: рабочий сайт или бот в срок.</p><div class="key"><b>Ключевая мысль.</b> Первый клиент — человек, которому ты показал готовый образец, а не тот, кому ты рассказал идею.</div>`]
+]}
+];
+const SOON=[];
+const G=[
+["Телеграм-бот за вечер","6 шагов от идеи до ответа в чате",`<ol><li>В @BotFather отправь <code>/newbot</code>, придумай имя и username, который заканчивается на <code>bot</code>.</li><li>Скопируй токен. Это пароль к боту, никому его не показывай.</li><li>Попроси Claude: «Напиши бота на Python и aiogram одним файлом, с командой /start и кнопками».</li><li>Установи Python 3.12 и библиотеку aiogram.</li><li>Положи токен в файл <code>.env</code> и запусти <code>python bot.py</code>.</li><li>Напиши боту <code>/start</code>.</li></ol><blockquote>Появилась ошибка? Скопируй её текст целиком и отправь Claude вместе с кодом.</blockquote>`],
+["Мини-апп для Telegram","Как выложить сайт и открыть его в боте",`<ol><li>Собери сайт в одном HTML-файле.</li><li>Выложи его на GitHub Pages или Vercel. Нужна ссылка с HTTPS.</li><li>В @BotFather отправь <code>/newapp</code>, выбери бота и вставь ссылку.</li><li>Получишь адрес вида <code>t.me/бот/имя</code>.</li><li>Подключи <code>telegram-web-app.js</code>, чтобы приложение знало тему и умело кнопку «Назад».</li></ol><blockquote>Обновить мини-апп просто: загрузи новый файл в тот же репозиторий, ссылка не изменится.</blockquote>`],
+["Как избежать нейрослопа","Почему сайты от ИИ выглядят одинаково",`<h4>Признаки</h4><ul><li>одинаковые карточки и градиенты везде</li><li>шрифты по умолчанию</li><li>текст вроде «Инновационные решения для вашего бизнеса»</li><li>нет ни одной настоящей детали про бизнес</li></ul><h4>Как исправить</h4><ul><li>дай референс: ссылку или скриншот сайта, который нравится</li><li>назови 2 шрифта и 3–4 цвета</li><li>напиши реальные тексты: услуги, цены, адрес</li><li>попроси убрать всё лишнее, а не добавить больше</li></ul>`],
+["Как править результат","Цикл доработки без хаоса",`<p>Смотри на результат, находи <b>одну</b> проблему, описывай её одним предложением, проверяй и повторяй.</p><h4>Хорошие формулировки</h4><blockquote>Кнопка мелкая на телефоне, сделай высоту 48px.</blockquote><blockquote>Заголовок длинный, сократи до 6 слов.</blockquote><blockquote>Между блоками тесно, добавь отступы.</blockquote><h4>Плохая формулировка</h4><blockquote>Сделай красивее.</blockquote>`],
+["Безопасность проекта","Токены, ключи и личные данные",`<ul><li>Токен бота и ключи не отправляй в чаты и не заливай на GitHub.</li><li>Файл <code>.env</code> добавь в <code>.gitignore</code>.</li><li>Если токен утёк, перевыпусти его в @BotFather: /mybots, твой бот, API Token, Revoke.</li><li>Не вставляй в ИИ чужие персональные данные.</li><li>Репозиторий с кодом бота лучше сделать приватным.</li></ul>`]
+];
+const PR=[
+["Лендинг","Ты — веб-дизайнер и верстальщик. Сделай одностраничный сайт для [ниша] «[название]» в одном HTML-файле. Аудитория: [кто]. Главное действие: [запись или звонок]. Блоки: первый экран, услуги и цены, 3 причины выбрать нас, отзывы (заглушки), контакты. Стиль: [цвета и настроение]. Адаптив под телефон. Ответ: только готовый код."],
+["Телеграм-бот","Ты — Python-разработчик. Напиши телеграм-бота на aiogram 3 одним файлом. Функции: [список]. Данные храни в SQLite. Токен бери из переменной окружения. Добавь комментарии и объясни, как запустить."],
+["Исправить ошибку","Вот код и ошибка: [код] [текст ошибки]. Объясни причину простыми словами и пришли исправленный файл целиком."],
+["Улучшить текст","Перепиши текст для сайта [ниша]: короче, без штампов, с конкретикой. Дай 3 варианта первого экрана."],
+["Разобрать референс","Опиши визуальный стиль сайта [ссылка или описание]: палитра в hex, шрифты, сетка, отступы. Затем примени этот стиль к моему сайту."]
+];
+const GL=[["HTML","язык разметки: из чего состоит страница"],["CSS","оформление: цвета, шрифты, отступы"],["JavaScript","код, который оживляет страницу"],["Хостинг","компьютер, на котором лежит сайт"],["Домен","адрес сайта, например site.ru"],["Репозиторий","папка проекта на GitHub"],["Деплой","публикация сайта в интернете"],["API","способ, которым программы обмениваются данными"],["Токен бота","пароль, который выдаёт @BotFather"],["Токен ИИ","кусочек текста, по которым считается длина запроса"],["Адаптив","сайт подстраивается под размер экрана"],["Лендинг","одностраничный сайт с одной целью"],["Промпт","твой запрос к ИИ"],["Контекст","всё, что ИИ помнит в рамках одного чата"],["Галлюцинация","уверенно выданный выдуманный факт"]];
+const CK=["Название и одна фраза на первом экране","Кнопка действия видна без прокрутки","Цены указаны","Нет заглушек вроде Lorem ipsum","Контакты можно нажать","Сайт проверен на телефоне","Ссылка открывается по HTTPS","Показал двум знакомым"];
+const FQ=[["Нужно ли уметь программировать?","Нет. Нужно ясно описывать задачу и проверять результат."],["Сколько стоит выложить сайт?","У GitHub Pages и Vercel есть бесплатные тарифы для небольших проектов. Условия проверяй на их сайтах."],["ИИ сделал не то. Что делать?","Уточни один пункт, приложи пример и не повторяй тот же запрос."],["Можно ли брать деньги за такие сайты?","Да. Сделай образец для ниши и покажи его владельцам таких бизнесов."],["Какой ИИ выбрать новичку?","Начни с Claude: он хорошо пишет код и сайты. Остальные пробуй под отдельные задачи."],["Сколько займёт первый сайт?","Обычно вечер: час на содержание, час на сборку и правки, полчаса на публикацию."]];
+const TIPS=["Один запрос — одна цель.","Покажи ИИ пример того, что тебе нравится: картинку или ссылку.","Просишь код — проси один файл. Его проще проверить и выложить.","Не пиши «переделай». Объясни, что именно не так.","Сохраняй удачные промты: они пригодятся в следующем проекте.","Проверяй результат на телефоне: большинство людей откроют сайт там."];
+const IC={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',lessons:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5v-16"/>',guides:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',prompts:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 17v4M17 19h4"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',gloss:'<path d="M4 6h16M4 12h16M4 18h10"/>',check:'<path d="m5 12 5 5 9-10"/>',faq:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>'};
+const ico=k=>`<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
+const HERO=`<svg viewBox="0 0 320 150"><rect x="24" y="22" width="272" height="140" rx="20" fill="#0c0c0e" stroke="#2b2b30"/><circle cx="48" cy="44" r="5" fill="#e11d2e"/><circle cx="64" cy="44" r="5" fill="#2b2b30"/><circle cx="80" cy="44" r="5" fill="#2b2b30"/><rect x="46" y="62" width="150" height="16" rx="8" fill="#2b2b30"/><rect x="46" y="86" width="96" height="16" rx="8" fill="#2b2b30"/><rect x="128" y="110" width="150" height="28" rx="14" fill="#e11d2e"/><rect x="144" y="121" width="86" height="6" rx="3" fill="#fff"/><g transform="translate(262 20) rotate(25)"><path d="M0-18c8 6 10 16 6 28h-12c-4-12-2-22 6-28z" fill="#fff"/><circle cy="-4" r="3.5" fill="#e11d2e"/><path d="M-6 10l-7 8 7-2zM6 10l7 8-7-2z" fill="#e11d2e"/></g></svg>`;
+const tg=window.Telegram&&Telegram.WebApp;
+try{tg.ready();tg.expand()}catch(e){}
+try{tg.setHeaderColor("#000000");tg.setBackgroundColor("#000000")}catch(e){}
+try{tg.BackButton.onClick(back)}catch(e){}
+let S={};try{S=JSON.parse(localStorage.getItem("aia")||"{}")}catch(e){}
+S.done=S.done||{};S.c=S.c||{};
+const save=()=>{try{localStorage.setItem("aia",JSON.stringify(S))}catch(e){}};
+const app=document.getElementById("app");
+let tab="home",v=null;
+const TB=[["home","Главная"],["lessons","Уроки"],["guides","Гайды"],["prompts","Промпты"],["more","Ещё"]];
+const tabs=()=>`<div class="tabs">`+TB.map(t=>`<button class="${tab==t[0]?"on":""}" onclick="go('${t[0]}')">${ico(t[0])}${t[1]}</button>`).join("")+`</div>`;
+const back1=`<div class="nav"><button class="ghost" style="flex:1" onclick="back()">Назад</button></div>`;
+const done=()=>Object.keys(S.done).length;
+function row(n,t,s,fn,cls){return `<button class="card ${cls||""}" onclick="${fn}">${IC[n]?`<span class="ic">${ico(n)}</span>`:`<span class="n">${n}</span>`}<div><b>${t}</b><small>${s}</small></div></button>`}
+function home(){
+  const c=S.last&&done()<L.length?row("lessons","Продолжить",`Урок ${S.last.i+1}, страница ${S.last.p+1}`,`openL(${S.last.i},${S.last.p})`):"";
+  const R=L.map((x,i)=>[x.t,`Урок ${i+1}`]);
+  const g=(k,t,s,f)=>`<button class="card" onclick="${f}"><span class="ic">${ico(k)}</span><b>${t}</b><small>${s}</small></button>`;
+  return `<div class="hero"><h1>Создавай ботов и сайты через Claude</h1><p class="sub">Пошаговые уроки, гайды и шаблоны: от основ ИИ до живой ссылки, которую можно отправить человеку.</p>${HERO}</div>
+  <div class="stats"><div><b>${L.length}</b><small>уроков</small></div><div><b>${G.length}</b><small>гайдов</small></div><div><b>${PR.length}</b><small>шаблонов</small></div></div>
+  <div class="card"><div><b>Пройдено уроков: ${done()} из ${L.length}</b><div class="bar"><i style="width:${done()/L.length*100}%"></i></div></div></div>${c}
+  <div class="card"><div><small>Совет дня</small><b style="font-weight:600;margin-top:4px">${TIPS[new Date().getDate()%TIPS.length]}</b></div></div>
+  <h3>Что ты получишь</h3><div class="body"><ul><li>понимание, как работает ИИ и чему в его ответах можно доверять</li><li>умение писать запросы, после которых не приходится переделывать всё заново</li><li>первый сайт с живой ссылкой, собранный за один вечер</li><li>понятный путь к собственному боту и мини-аппу</li></ul></div>
+  <h3>Твой путь</h3><div class="road">`+R.map((r,i)=>`<div class="${S.done[i]?"d":""}"><b>${r[0]}</b><small>${r[1]}</small></div>`).join("")+`</div>
+  <h3>Разделы</h3><div class="grid">${g("lessons","Уроки",`${L.length} уроков`,"go('lessons')")}${g("guides","Гайды",`${G.length} практических`,"go('guides')")}${g("prompts","Промпты",`${PR.length} шаблонов`,"go('prompts')")}${g("gloss","Словарь",`${GL.length} терминов`,"openV('gloss')")}</div>
+  <h3>Как учиться</h3><div class="body"><ol><li>Читай урок на телефоне, по одному экрану за раз.</li><li>Сразу повторяй шаг в Claude: чтение без практики быстро забывается.</li><li>Сохраняй удачные запросы из раздела «Промпты».</li><li>Перед показом людям пройди чек-лист сайта в разделе «Ещё».</li></ol></div>`;
+}
+function lessons(){
+  return `<h1>Уроки</h1><p class="sub">Проходи по порядку: каждый урок опирается на предыдущий.</p>`
+  +L.map((x,i)=>row(i+1,x.t,`${x.p.length} стр.${S.done[i]?", пройден":""}`,`openL(${i},0)`,S.done[i]?"ok":"")).join("")
+  +SOON.map((t,i)=>`<div class="card soon"><span class="n">${L.length+i+1}</span><div><b>${t}</b><small>Скоро</small></div></div>`).join("")
+}
+function guides(){return `<h1>Гайды</h1><p class="sub">Короткие инструкции по конкретным задачам.</p>`+G.map((g,i)=>row("guides",g[0],g[1],`openV('guide',${i})`)).join("")}
+function prompts(){return `<h1>Промпты</h1><p class="sub">Шаблоны для копирования. Замени слова в квадратных скобках на свои.</p>`+PR.map((p,i)=>`<div class="pr"><b>${p[0]}</b><p>${p[1]}</p><button class="btn" id="c${i}" onclick="cp(${i})">Копировать</button></div>`).join("")}
+function more(){return `<h1>Ещё</h1><p class="sub">Справочные материалы.</p>`+row("gloss","Словарь","Термины простым языком","openV('gloss')")+row("check","Чек-лист сайта",`Готово ${Object.values(S.c).filter(Boolean).length} из ${CK.length}`,"openV('check')")+row("faq","Частые вопросы","Короткие ответы","openV('faq')")}
+function gl(q){q=(q||"").toLowerCase();return GL.filter(x=>(x[0]+x[1]).toLowerCase().includes(q)).map(x=>`<div class="dt"><b>${x[0]}</b> — ${x[1]}</div>`).join("")||`<p class="mut">Ничего не найдено</p>`}
+function view(){
+  if(v.k=="lesson"){const x=L[v.i],pg=x.p[v.p],last=v.p==x.p.length-1;S.last={i:v.i,p:v.p};if(last)S.done[v.i]=1;save();
+    return [`<div class="bar" style="margin:0 0 20px"><i style="width:${(v.p+1)/x.p.length*100}%"></i></div>${v.p?`<div class="tag">Урок ${v.i+1}. ${x.t}</div>`:`<div class="banner"><span class="big">${v.i+1}</span><div><div class="tag">Урок</div><b style="font-size:19px">${x.t}</b></div></div>`}<h2>${pg[0]}</h2><div class="body">${pg[1]}</div>`,
+    `<div class="nav"><button class="ghost" onclick="back()">Назад</button><span>${v.p+1} из ${x.p.length}</span>`+(last?`<button onclick="goBack()">К урокам</button>`:`<button onclick="next()">Дальше</button>`)+`</div>`]}
+  if(v.k=="guide"){const g=G[v.i];return [`<div class="tag">Гайд</div><h2>${g[0]}</h2><div class="body">${g[2]}</div>`,back1]}
+  if(v.k=="gloss")return [`<h2>Словарь</h2><input placeholder="Поиск по терминам" oninput="document.getElementById('gl').innerHTML=gl(this.value)"><div id="gl">${gl()}</div>`,back1];
+  if(v.k=="check")return [`<h2>Чек-лист сайта</h2><p class="sub">Отметь всё, что готово перед тем, как показывать людям.</p>`+CK.map((t,i)=>`<button class="cb ${S.c[i]?"on":""}" onclick="chk(${i})"><i>${S.c[i]?"✓":""}</i>${t}</button>`).join(""),back1];
+  return [`<h2>Частые вопросы</h2>`+FQ.map(q=>`<div class="pr"><b>${q[0]}</b><p>${q[1]}</p></div>`).join(""),back1];
+}
+function render(){
+  let h,n;
+  if(v){[h,n]=view()}else{h=({home,lessons,guides,prompts,more})[tab]();n=tabs()}
+  app.innerHTML=h+n;
+  try{v?tg.BackButton.show():tg.BackButton.hide()}catch(e){}
+}
+function go(t){tab=t;v=null;render();scrollTo(0,0)}
+function openL(i,p){v={k:"lesson",i,p};render();scrollTo(0,0)}
+function openV(k,i){v={k,i};render();scrollTo(0,0)}
+function next(){v.p++;render();scrollTo(0,0)}
+function back(){if(!v)return;if(v.k=="lesson"&&v.p>0)v.p--;else v=null;render();scrollTo(0,0)}
+function goBack(){v=null;tab="lessons";render();scrollTo(0,0)}
+function chk(i){S.c[i]=!S.c[i];save();render()}
+function cp(i){const t=PR[i][1];const f=()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()};
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(f);
+  const b=document.getElementById("c"+i);b.textContent="Скопировано";setTimeout(()=>{b.textContent="Копировать"},1500)}
+render();
+</script>
+</body>
+</html>
